@@ -1,13 +1,13 @@
-import nump as np
-import scypi as sp
+import numpy as np
+#import scipy as sp
 import matplotlib.pyplot as plt
 
 # Define the function
 def f(x):
-    return x ** 2
+    return 0.3**abs(x) * np.sin(4*x) - np.tanh(2*x) +2
 
 # Generate x values
-x_values = np.linspace(-10, 10, 400)
+x_values = np.linspace(-4, 4, 400)
 
 # Generate y values
 y_values = f(x_values)

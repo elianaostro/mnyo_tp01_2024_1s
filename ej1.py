@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # Define the function
 def f(x):
-    return 0.3**abs(x) * np.sin(4*x) - np.tanh(2*x) +2
+    return 0.3**abs(x) * np.sin(4*x) - np.tanh(2*x) + 2
 
 def lineal_spline_interpolation(x, y):
     interpolator = interpolate.interp1d(x, y)
@@ -45,23 +45,23 @@ y_splines_15 = f(x_splines_15)
 # Plot the graph
 plt.plot(x_values, y_values, label='Ground Truth', linestyle='--')
 
-spl = interpolate.UnivariateSpline(x_values, y_values)
-plt.plot(x_splines_15, spl(x_splines_15), label='Splines')
+# spl = interpolate.UnivariateSpline(x_values, y_values)
+# plt.plot(x_splines_15, spl(x_splines_15), label='Splines')
 
 y_lagrange = lagranje15(x_splines_15)
 plt.plot(x_splines_15, y_lagrange,label='Lagrange')
 
-y_lineal_spline = lineal_spline_interpolation(x_splines_15, y_splines_15)
-y_splines_lineal=[]
-for x in x_values:
-    y_splines_lineal.append(y_lineal_spline(x))
-plt.plot(x_values, y_splines_lineal, label='Lineal Spline')
+# y_lineal_spline = lineal_spline_interpolation(x_splines_15, y_splines_15)
+# y_splines_lineal=[]
+# for x in x_values:
+#     y_splines_lineal.append(y_lineal_spline(x))
+# plt.plot(x_values, y_splines_lineal, label='Lineal Spline')
 
-y_quadratic_spline = quadratic_spline_interpolation(x_splines_15, y_splines_15)
-y_splines_quadratic = []
-for x in x_values:
-    y_splines_quadratic.append(y_quadratic_spline(x))
-plt.plot(x_values, y_splines_quadratic, label='Quadratic Spline')
+# y_quadratic_spline = quadratic_spline_interpolation(x_splines_15, y_splines_15)
+# y_splines_quadratic = []
+# for x in x_values:
+#     y_splines_quadratic.append(y_quadratic_spline(x))
+# plt.plot(x_values, y_splines_quadratic, label='Quadratic Spline')
 
 y_cubic_spline = cubic_spline_interpolation(x_splines_15, y_splines_15)
 y_splines_cubic = []
@@ -80,6 +80,8 @@ plt.grid(False)
 
 # Add legend
 plt.legend()
+
+plt.scatter(x_splines_15, y_splines_15, color='red', s=10)
 
 # Show the plot
 plt.show()

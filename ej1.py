@@ -1,87 +1,107 @@
 import numpy as np
-from scipy import interpolate
 import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
+from scipy.interpolate import lagrange
+from scipy.interpolate import CubicSpline
 
-# Define the function
+# Define the function to interpolate
 def f(x):
     return 0.3**abs(x) * np.sin(4*x) - np.tanh(2*x) + 2
 
-def lineal_spline_interpolation(x, y):
-    interpolator = interpolate.interp1d(x, y)
-    return interpolator
+def lagrange_interpolation(x_values, y_values, x):
+    # """Perform Lagrange interpolation to find y-value at x."""
+    poly = lagrange(x_values, y_values)
+    return poly(x)
 
-def quadratic_spline_interpolation(x, y):
-    interpolator = interpolate.interp1d(x, y, kind='quadratic')
-    return interpolator
+def cubic_spline_interpolation(x_values, y_values, x):
+    # """Perform Lagrange interpolation to find y-value at x."""
+    poly = CubicSpline(x_values, y_values)
+    return poly(x)
 
-def cubic_spline_interpolation(x, y):
-    interpolator = interpolate.interp1d(x, y, kind='cubic')
-    return interpolator
+def lagrange_error(x_values, y_values, x):
+    poly = lagrange(x_values, y_values)
+    return abs(poly(x) - f(x))
 
-def lagranje15(x):
-    n = len(x_splines_15)
-    result = 0.0
-    for i in range(n):
-        term = f(x_splines_15[i])
-        for j in range(n):
-            if j != i:
-                term *= (x - x_splines_15[j]) / (x_splines_15[i] - x_splines_15[j])
-        result += term
-    return result
+def cubic_spline_error(x_values, y_values, x):
+    poly = CubicSpline(x_values, y_values)
+    return abs(poly(x) - f(x))
 
-# Generate x values
-x_values = np.linspace(-4, 4, 100)
+def chebyshev_nodes(n, a=-4, b=4):
+    """Generate n non-equidistant Chebyshev nodes in the interval [a, b]."""
+    k = np.arange(1, n + 1)
+    nodes = 0.5 * (a + b) + 0.5 * (b - a) * np.cos((2 * k - 1) * np.pi / (2 * n))
+    return np.sort(nodes)
 
-x_splines_15 = np.linspace(-4, 4, 15)
-x_splines_25 = np.linspace(-4, 4, 25)
-x_splines_50 = np.linspace(-4, 4, 50)
-x_splines_75 = np.linspace(-4, 4, 75)
-x_splines_100 = np.linspace(-4, 4, 100)
-
-# Generate y values
+# Choose x-values and calculate corresponding y-values
+num_points = 10
+x_values = np.linspace(-4, 4, num_points)
 y_values = f(x_values)
-y_splines_15 = f(x_splines_15)
 
-# Plot the graph
-plt.plot(x_values, y_values, label='Ground Truth', linestyle='--')
+x_values_chebyshev = chebyshev_nodes(100)
+y_values_chebyshev = f(x_values_chebyshev)
 
-# spl = interpolate.UnivariateSpline(x_values, y_values)
-# plt.plot(x_splines_15, spl(x_splines_15), label='Splines')
+x_values_chebyshev = chebyshev_nodes(num_points)
+y_values_chebyshev = f(x_values_chebyshev)
 
-y_lagrange = lagranje15(x_splines_15)
-plt.plot(x_splines_15, y_lagrange,label='Lagrange')
+x_ground_truth = np.linspace(-4, 4, 100)
+y_ground_truth = f(x_ground_truth)
 
-# y_lineal_spline = lineal_spline_interpolation(x_splines_15, y_splines_15)
-# y_splines_lineal=[]
-# for x in x_values:
-#     y_splines_lineal.append(y_lineal_spline(x))
-# plt.plot(x_values, y_splines_lineal, label='Lineal Spline')
+x_interpolated_lagrange = np.linspace(-4, 4, 100)
+y_interpolated_lagrange = lagrange_interpolation(x_values, y_values, x_interpolated_lagrange)
 
-# y_quadratic_spline = quadratic_spline_interpolation(x_splines_15, y_splines_15)
-# y_splines_quadratic = []
-# for x in x_values:
-#     y_splines_quadratic.append(y_quadratic_spline(x))
-# plt.plot(x_values, y_splines_quadratic, label='Quadratic Spline')
+x_interpolated_lagrange_chebyshev = np.linspace(-4, 4, 100)
+y_interpolated_lagrange_chebyshev = lagrange_interpolation(x_values_chebyshev, y_values_chebyshev, x_interpolated_lagrange_chebyshev)
 
-y_cubic_spline = cubic_spline_interpolation(x_splines_15, y_splines_15)
-y_splines_cubic = []
-for x in x_values:
-    y_splines_cubic.append(y_cubic_spline(x))
-plt.plot(x_values, y_splines_cubic, label='Cubic Spline')
+lagrange_error_values = lagrange_error(x_values, y_values, x_interpolated_lagrange)
+lagrange_error_values_chebyshev = lagrange_error(x_values_chebyshev, y_values_chebyshev, x_interpolated_lagrange_chebyshev)
 
+x_interpolated_cubic = np.linspace(-4, 4, 100)
+y_interpolated_cubic = cubic_spline_interpolation(x_values, y_values, x_interpolated_cubic)
 
-# Add labels and title
-# plt.xlabel('x')
-# plt.ylabel('f(x)')
-#plt.title('Graph of $f(x) = x^2$')
+x_interpolated_cubic_chebyshev = np.linspace(-4, 4, 100)
+y_interpolated_cubic_chebyshev = cubic_spline_interpolation(x_values_chebyshev, y_values_chebyshev, x_interpolated_cubic_chebyshev)
 
-# Add grid
-plt.grid(False)
+cubic_spline_error_values = cubic_spline_error(x_values, y_values, x_interpolated_cubic)
+cubic_spline_error_values_chebyshev = cubic_spline_error(x_values_chebyshev, y_values_chebyshev, x_interpolated_cubic_chebyshev)
 
-# Add legend
-plt.legend()
+fig, axs = plt.subplots(2, 2)
 
-plt.scatter(x_splines_15, y_splines_15, color='red', s=10)
+axs[0,0].plot(x_ground_truth, y_ground_truth, label='Ground Truth', linestyle='--', color='blue')
+axs[0,0].scatter(x_values, y_values, label='Interpolation Points', color='red', s=8)
+axs[0,0].plot(x_interpolated_lagrange, y_interpolated_lagrange, label='Lagrange Interpolation', color='green')
+axs[0,0].set_title('Lagrange Interpolation')
 
-# Show the plot
+axs[0,1].plot(x_interpolated_lagrange, lagrange_error_values, label='Lagrange Error', color='red')
+axs[0,1].set_title('Lagrange Error')
+
+axs[1,0].plot(x_ground_truth, y_ground_truth, label='Ground Truth', linestyle='--', color='blue')
+axs[1,0].scatter(x_values, y_values, label='Interpolation Points', color='red', s=8)
+axs[1,0].plot(x_interpolated_cubic, y_interpolated_cubic, label='Cubic Spline Interpolation', color='orange')
+axs[1,0].set_title('Cubic Spline Interpolation')
+
+axs[1,1].plot(x_interpolated_cubic, cubic_spline_error_values, label='Cubic Spline Error', color='red')
+axs[1,1].set_title('Cubic Spline Error')
+
+plt.tight_layout()
+plt.show()
+
+fig, axs = plt.subplots(2, 2)
+
+axs[0,0].plot(x_ground_truth, y_ground_truth, label='Ground Truth', linestyle='--', color='blue')
+axs[0,0].scatter(x_values_chebyshev, y_values_chebyshev, label='Interpolation Points', color='red', s=8)
+axs[0,0].plot(x_interpolated_lagrange_chebyshev, y_interpolated_lagrange_chebyshev, label='Lagrange Interpolation', color='green')
+axs[0,0].set_title('Lagrange Interpolation (Chebyshev Nodes)')
+
+axs[0,1].plot(x_interpolated_lagrange_chebyshev, lagrange_error_values_chebyshev, label='Lagrange Error', color='red')
+axs[0,1].set_title('Lagrange Error (Chebyshev Nodes)')
+
+axs[1,0].plot(x_ground_truth, y_ground_truth, label='Ground Truth', linestyle='--', color='blue')
+axs[1,0].scatter(x_values_chebyshev, y_values_chebyshev, label='Interpolation Points', color='red', s=8)
+axs[1,0].plot(x_interpolated_cubic_chebyshev, y_interpolated_cubic_chebyshev, label='Cubic Spline Interpolation', color='orange')
+axs[1,0].set_title('Cubic Spline Interpolation (Chebyshev Nodes)')
+
+axs[1,1].plot(x_interpolated_cubic_chebyshev, cubic_spline_error_values_chebyshev, label='Cubic Spline Error', color='red')
+axs[1,1].set_title('Cubic Spline Error (Chebyshev Nodes)')
+
+plt.tight_layout()
 plt.show()

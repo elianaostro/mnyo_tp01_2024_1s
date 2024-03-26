@@ -44,6 +44,7 @@ ax1.set_title('Original Function')
 # Plot interpolated function using cubic interpolation
 ax2 = fig.add_subplot(1, 3, 2, projection='3d')
 ax2.plot_surface(X1_new, X2_new, Z_new, cmap='viridis')
+ax2.plot_surface(X1, X2, Z, cmap='plasma', alpha=0.2)
 ax2.set_title('Cubic Interpolation')
 
 

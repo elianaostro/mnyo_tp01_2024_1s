@@ -131,3 +131,41 @@ linear_colorbar.update_ticks()
 
 plt.tight_layout()
 plt.show()
+
+# Generate n non-equidistant Chebyshev nodes
+def chebyshev_nodes(n, a=-4, b=4):
+    """Generate n non-equidistant Chebyshev nodes in the interval [a, b]."""
+    k = np.arange(1, n + 1)
+    nodes = 0.5 * (a + b) + 0.5 * (b - a) * np.cos((2 * k - 1) * np.pi / (2 * n))
+    return np.sort(nodes)
+
+# Generate nodes in R^2
+def generate_chebyshev_nodes(n, a=-1, b=1):
+    """Generate n non-equidistant Chebyshev nodes in the interval [a, b] in R^2."""
+    x1_nodes = chebyshev_nodes(n, a, b)
+    x2_nodes = chebyshev_nodes(n, a, b)
+    nodes = np.column_stack((x1_nodes, x2_nodes))
+    return nodes
+n = 20  # Number of nodes
+nodes = np.zeros((n, 2))  # Initialize array to store nodes
+x1_nodes = chebyshev_nodes(n) 
+
+# Plot original function
+fig = plt.figure(figsize=(18, 6))
+
+# Plot original function
+ax1 = fig.add_subplot(1, 3, 1, projection='3d')
+ax1.plot_surface(X1, X2, Z, cmap='viridis')
+ax1.set_title('Original Function')
+
+# Plot interpolated function using cubic interpolation
+ax2 = fig.add_subplot(1, 3, 2, projection='3d')
+ax2.plot_surface(X1_new, X2_new, Z_new, cmap='viridis')
+ax2.set_title('Cubic Interpolation')
+
+# Plot interpolated function using linear interpolation
+ax3 = fig.add_subplot(1, 3, 3, projection='3d')
+ax3.plot_surface(X1_new2, X2_new2, Z_new2, cmap='viridis')
+ax3.set_title('Linear Interpolation')
+
+plt.show()

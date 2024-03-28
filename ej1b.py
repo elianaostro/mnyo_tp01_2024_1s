@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import interp2d
+import matplotlib.gridspec as gridspec
 
 def f(x1, x2):
     return (
@@ -85,49 +86,53 @@ error_linear = np.abs(f(X1_new, X2_new) - Z_interp_linear)
 
 # plt.show()
 
-import matplotlib.gridspec as gridspec
 
-# Create a 1x2 grid
-fig = plt.figure(figsize=(16, 8))
-gs = fig.add_gridspec(1, 2, width_ratios=[2, 2])
-
-# Original function on the left
-ax_original = fig.add_subplot(gs[0, 0], projection='3d')
+# Original function plot
+fig1 = plt.figure(figsize=(12, 9))
+ax_original = fig1.add_subplot(111, projection='3d')
 ax_original.plot_surface(X1, X2, Z, cmap='viridis')
 ax_original.set_title('Original Function')
 
-# Subgrid for interpolation and error plots on the right
-gs_right = gs[0, 1].subgridspec(2, 2, width_ratios=[2, 1])
+plt.show()
 
-# Plot interpolated function using cubic interpolation
-ax_interp_cubic = fig.add_subplot(gs_right[0, 0], projection='3d')
-ax_interp_cubic.plot_surface(X1_new, X2_new, Z_new, cmap='plasma')
-ax_interp_cubic.set_title('Cubic Interpolation')
-
-# Plot error for cubic interpolation
-ax_error_cubic = fig.add_subplot(gs_right[0, 1])
-cubic_error_plot = ax_error_cubic.imshow(error_cubic, extent=(-1, 1, -1, 1), cmap='plasma')
-cubic_colorbar = plt.colorbar(cubic_error_plot, ax=ax_error_cubic, shrink=0.5, aspect=10)
-ax_error_cubic.set_title('Absolute Error (Cubic Interpolation)')
-
-# Set scientific notation for the colorbar ticks
-cubic_colorbar.formatter.set_powerlimits((-3, 3))
-cubic_colorbar.update_ticks()
-
-# Plot interpolated function using linear interpolation
-ax_interp_linear = fig.add_subplot(gs_right[1, 0], projection='3d')
+# Linear interpolation plot
+fig2 = plt.figure(figsize=(12, 9))
+ax_interp_linear = fig2.add_subplot(111, projection='3d')
 ax_interp_linear.plot_surface(X1_new2, X2_new2, Z_new2, cmap='plasma')
 ax_interp_linear.set_title('Linear Interpolation')
 
-# Plot error for linear interpolation
-ax_error_linear = fig.add_subplot(gs_right[1, 1])
+plt.show()
+
+# Linear error plot
+fig3 = plt.figure(figsize=(8, 6))
+ax_error_linear = fig3.add_subplot(111)
 linear_error_plot = ax_error_linear.imshow(error_linear, extent=(-1, 1, -1, 1), cmap='plasma')
-linear_colorbar = plt.colorbar(linear_error_plot, ax=ax_error_linear, shrink=0.5, aspect=10)
+linear_colorbar = plt.colorbar(linear_error_plot, ax=ax_error_linear)
 ax_error_linear.set_title('Absolute Error (Linear Interpolation)')
 
 # Set scientific notation for the colorbar ticks
 linear_colorbar.formatter.set_powerlimits((-3, 3))
 linear_colorbar.update_ticks()
 
-plt.tight_layout()
+plt.show()
+
+# Cubic interpolation plot
+fig4 = plt.figure(figsize=(12, 9))
+ax_interp_cubic = fig4.add_subplot(111, projection='3d')
+ax_interp_cubic.plot_surface(X1_new, X2_new, Z_new, cmap='plasma')
+ax_interp_cubic.set_title('Cubic Interpolation')
+
+plt.show()
+
+# Cubic error plot
+fig5 = plt.figure(figsize=(8, 6))
+ax_error_cubic = fig5.add_subplot(111)
+cubic_error_plot = ax_error_cubic.imshow(error_cubic, extent=(-1, 1, -1, 1), cmap='plasma')
+cubic_colorbar = plt.colorbar(cubic_error_plot, ax=ax_error_cubic)
+ax_error_cubic.set_title('Absolute Error (Cubic Interpolation)')
+
+# Set scientific notation for the colorbar ticks
+cubic_colorbar.formatter.set_powerlimits((-3, 3))
+cubic_colorbar.update_ticks()
+
 plt.show()

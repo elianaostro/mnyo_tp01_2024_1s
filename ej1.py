@@ -102,7 +102,7 @@ def main():
     plot_interpolation_comparison(x_ground_truth, y_ground_truth, x_values_chebyshev, y_values_chebyshev,
                                   x_interpolated_lagrange_chebyshev, y_interpolated_lagrange_chebyshev, lagrange_error_values_chebyshev,
                                   x_interpolated_cubic_chebyshev, y_interpolated_cubic_chebyshev, cubic_spline_error_values_chebyshev,
-                                  "Nodos No Equiespaciados Por Chebysheb")
+                                  "Nodos No Equiespaciados Por Chebyshev")
 
 if(__name__ == "__main__"):
     main()

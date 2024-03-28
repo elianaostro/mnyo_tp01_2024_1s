@@ -34,36 +34,36 @@ def chebyshev_nodes(n, a=-4, b=4):
 
 def plot_interpolation_comparison(x_ground_truth, y_ground_truth, x_values, y_values, x_interpolated_lagrange, y_interpolated_lagrange, lagrange_error_values,
                                   x_interpolated_cubic, y_interpolated_cubic, cubic_spline_error_values, title):
+    fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+    fig.suptitle(title)
+
     # Plot Lagrange interpolation with regular nodes
-    plt.figure(figsize=(6, 4))
-    plt.plot(x_ground_truth, y_ground_truth, label='Ground Truth', linestyle='--', color='blue')
-    plt.scatter(x_values, y_values, label='Puntos de Interpolacion', color='red', s=8)
-    plt.plot(x_interpolated_lagrange, y_interpolated_lagrange, label='Interpolacion Lagrange', color='green')
-    plt.legend()
-    plt.savefig(title + "_Interpolacion_Lagrange.png")
+    axs[0, 0].plot(x_ground_truth, y_ground_truth, label='Ground Truth', linestyle='--', color='blue')
+    axs[0, 0].scatter(x_values, y_values, label='Puntos de Interpolacion', color='red', s=8)
+    axs[0, 0].plot(x_interpolated_lagrange, y_interpolated_lagrange, label='Interpolacion Lagrange', color='green')
+    axs[0, 0].set_title('Interpolacion Lagrange')
+    axs[0, 0].legend()
 
     # Plot error for Lagrange interpolation
-    plt.figure(figsize=(6, 4))
-    plt.plot(x_interpolated_lagrange, lagrange_error_values, label='Error Lagrange', color='red')
-    plt.savefig(title + "_Error_Lagrange.png")
+    axs[0, 1].plot(x_interpolated_lagrange, lagrange_error_values, label='Error Lagrange', color='red')
+    axs[0, 1].set_title('Error Lagrange')
 
     # Plot Cubic Spline interpolation with regular nodes
-    plt.figure(figsize=(6, 4))
-    plt.plot(x_ground_truth, y_ground_truth, label='Ground Truth', linestyle='--', color='blue')
-    plt.scatter(x_values, y_values, label='Puntos de Interpolacion', color='red', s=8)
-    plt.plot(x_interpolated_cubic, y_interpolated_cubic, label='Interpolacion Splines Cubicos', color='orange')
-    plt.legend()
-    plt.savefig(title + "_Interpolacion_Splines_Cubicos.png")
+    axs[1, 0].plot(x_ground_truth, y_ground_truth, label='Ground Truth', linestyle='--', color='blue')
+    axs[1, 0].scatter(x_values, y_values, label='Puntos de Interpolacion', color='red', s=8)
+    axs[1, 0].plot(x_interpolated_cubic, y_interpolated_cubic, label='Interpolacion Splines Cubicos', color='orange')
+    axs[1, 0].set_title('Interpolacion Splines Cubicos')
+    axs[1, 0].legend()
 
     # Plot error for Cubic Spline interpolation
-    plt.figure(figsize=(6, 4))
-    plt.plot(x_interpolated_cubic, cubic_spline_error_values, label='Error Splines Cubicos', color='red')
-    plt.savefig(title + "_Error_Splines_Cubicos.png")
+    axs[1, 1].plot(x_interpolated_cubic, cubic_spline_error_values, label='Error Splines Cubicos', color='red')
+    axs[1, 1].set_title('Error Splines Cubicos')
 
-
+    plt.tight_layout()
+    plt.show()
 def main():
     # Choose x-values and calculate corresponding y-values
-    num_points = 15
+    num_points = 10
     x_values = np.linspace(-4, 4, num_points)
     y_values = f(x_values)
 
@@ -97,11 +97,11 @@ def main():
                                   x_interpolated_cubic, y_interpolated_cubic, cubic_spline_error_values,
                                   "Nodos Equiespaciados")
 
-    # Plot with non-equispaced nodes
+    # Plot with non-equispaced nodes - Chebyshev
     plot_interpolation_comparison(x_ground_truth, y_ground_truth, x_values_chebyshev, y_values_chebyshev,
                                   x_interpolated_lagrange_chebyshev, y_interpolated_lagrange_chebyshev, lagrange_error_values_chebyshev,
                                   x_interpolated_cubic_chebyshev, y_interpolated_cubic_chebyshev, cubic_spline_error_values_chebyshev,
                                   "Nodos No Equiespaciados Por Chebyshev")
 
-if(__name__ == "__main__"):
+if __name__ == "__main__":
     main()

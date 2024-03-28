@@ -39,7 +39,6 @@ def newton_raphson_doble_variable(f1, f2, x0, y0, tol=1e-6, max_iter=1000):
                  return x0 
              x0, y0 = p 
          return None 
-  
 
 def find_intersection_point(interpolated_trajectory_v1_x, interpolated_trajectory_v2_x, interpolated_trajectory_v1_y, interpolated_trajectory_v2_y):
     def f1(x, y): 
@@ -55,14 +54,14 @@ def find_intersection_point(interpolated_trajectory_v1_x, interpolated_trajector
 
     return m1_x1_intersect, m1_x2_intersect
      
-
-def plot_trajectory(data, x_new, y_new, x_new2, y_new2, m1_x1_intersect, m1_x2_intersect):
+def plot_trajectory(data, data_mediciones, data_mediciones2, x_new, y_new, x_new2, y_new2, m1_x1_intersect, m1_x2_intersect):
     plt.figure(figsize=(8, 6))
     plt.plot(data['x'], data['y'], label='Ground Truth', linestyle='--')
+    plt.plot(data_mediciones['x'], data_mediciones['y'], 'ro', label='Puntos de Medición 1', linestyle=' ', markersize=3)
+    plt.plot(data_mediciones2['x'], data_mediciones2['y'], 'go', label='Puntos de Medición 2', linestyle=' ', markersize=3)
     plt.plot(x_new, y_new, 'r-', label='Trayectoria 1 Spline Cubico', linestyle='-')
     plt.plot(x_new2, y_new2, 'g-', label='Trayectoria 2 Spline Cubico', linestyle='-')
     plt.scatter(m1_x1_intersect, m1_x2_intersect, color='black', label='Punto de Interseccion')
-    plt.title('Trayectorias Interpoladas con Splines Cubicos')
     plt.xlabel('X')
     plt.ylabel('Y')
     plt.legend()
@@ -70,10 +69,7 @@ def plot_trajectory(data, x_new, y_new, x_new2, y_new2, m1_x1_intersect, m1_x2_i
     plt.show()
 
 
-
-
 def main():
-
     file_path = "mnyo_ground_truth.csv"
     data = pd.read_csv(file_path, header=None, delimiter=' ', names=['x', 'y'])
     file_path_mediciones = "mnyo_mediciones.csv"
@@ -100,8 +96,7 @@ def main():
                     CubicSpline(data_mediciones2.index, data_mediciones2["y"])
                                                               )
     
-    plot_trajectory(data, x_new, y_new, x_new2, y_new2, m1_x1_intersect, m1_x2_intersect)
+    plot_trajectory(data,data_mediciones,data_mediciones2, x_new, y_new, x_new2, y_new2, m1_x1_intersect, m1_x2_intersect)
 
-       
 if __name__ == '__main__':
     main()

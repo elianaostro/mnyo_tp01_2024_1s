@@ -39,9 +39,6 @@ def main():
     x_values = np.linspace(-4, 4, num_points)
     y_values = f(x_values)
 
-    x_values_chebyshev = chebyshev_nodes(100)
-    y_values_chebyshev = f(x_values_chebyshev)
-
     x_values_chebyshev = chebyshev_nodes(num_points)
     y_values_chebyshev = f(x_values_chebyshev)
 

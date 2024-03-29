@@ -62,7 +62,7 @@ def plot_error(X1, X2, error, kind):
     plt.ylabel('x2')
 
 def main():
-    num_points_list = [10, 50, 250]  # Lista de cantidades de puntos a considerar
+    num_points_list = [10, 20, 50]  # Lista de cantidades de puntos a considerar
 
     for num_points in num_points_list:
         print(f"Interpolación con {num_points} puntos:")
